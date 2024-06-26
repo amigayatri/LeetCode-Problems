@@ -1,18 +1,18 @@
 var dailyTemperatures = function(temperatures) {
-    let stack = [];
-    let result = []
-    for (let i = 0; i < temperatures.length; i++) {
-        result.push(0);
-    }
-    for(let i = temperatures.length -1; i >= 0; i--) {
-        while(stack.length > 0 && temperatures[stack[stack.length -1]] <= temperatures[i]) {
-            stack.pop();     
-        } 
-        if(stack.length > 0) {
-            result[i] = stack[stack.length -1] - i;
+    const n = temperatures.length
+    let answer = new Array(n).fill(0)
+    let hottest = 0
+    for(let currDay = temperatures.length -1; currDay >= 0; currDay--) {
+        const currTemp = temperatures[currDay]
+        if (currTemp >= hottest) {
+            hottest = currTemp
+            continue
         }
-        stack.push(i);
-
+        let days = 1
+        while(temperatures[currDay + days] <= currTemp) {
+            days += answer[currDay+days]
+        } 
+        answer[currDay] = days
     }
-   return result;
+   return answer;
 };
